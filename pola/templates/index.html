@@ -1,5 +1,6 @@
 {% extends "base-main.html" %}
-{% load staticfiles %}
+{% load static %}
+{% load pola_web_static %}
 
 {%  block header_class_name %}header{% endblock %}
 
@@ -13,7 +14,7 @@
                 <div class="social-bar">
                     <ul>
                         <li>
-                            <a href="mailto:aplikacja.pola@gmail.com">
+                            <a href="mailto:pola@klubjagiellonski.pl">
                                 <svg role="img" class="icon" title="Mail">
                                     <use xlink:href="#mail"/>
                                 </svg>
@@ -78,6 +79,14 @@
             </div>
         </div>
         <div class="page-content">
+            <div class="section" id="pola-web">
+                <div id="root"></div>
+                <script src="{% pola_web_static 'runtime-main.js' %}"></script>
+                <script src="{% pola_web_static 'static/js/2.5ba2315d.chunk.js' %}"></script>
+                <script src="{% pola_web_static 'main.js' %}"></script>
+            </div>
+        </div>
+        <div class="page-content">
             <div class="section" id="about">
                 <h2 id="about">O Poli</h2>
                 <p>Masz dość masówki globalnych koncernów? Szukasz lokalnych firm tworzących unikatowe produkty? Pola pomoże Ci odnaleźć polskie wyroby. Zabierając Polę na zakupy, odnajdujesz produkty „z duszą” i wspierasz polską gospodarkę. </p>
@@ -97,8 +106,8 @@
                 <h2>Partnerzy</h2>
                 <ul class="partners-list">
                     <li class="partner">
-                        <a href="http://www.cakj.pl" class="">
-                            <img src="{% static "images/logo_cakj.png" %}">
+                        <a href="https://klubjagiellonski.pl/projekty/centrum-analiz/" class="">
+                            <img src="{% static "images/logo_cakjv2_crop.png" %}">
                         </a>
                         <div class="skill">Algorytm</div>
                     </li>
@@ -154,7 +163,7 @@
                         <div class="accordian-title">Reprezentuję producenta. Moja firma nie została jeszcze zweryfikowana przez redakcję. Co mam zrobić?</div>
                     </div>
                     <div class="accordian-content" aria-hidden="true">
-                        <p>Dodajemy i weryfikujemy firmy wg częstości ich skanowania - w pierwszej kolejności redakcja zajmuje się tymi, których produkty są najczęściej skanowane. Prosimy o cierpliwość - z czasem wszystkie firmy znajdą się w naszej bazie.</p>
+                        <p>W pierwszej kolejności zajmujemy się tymi firmami, których produkty są najczęściej skanowane. Jednak możesz nam pomóc w weryfikacji firmy wypełniając <a href="https://forms.gle/st2HKhVZNumB9E7N9">formularz</a>.</p>
                     </div>
                 </div>
                 <div class="accordian">
@@ -177,10 +186,10 @@
                                 <use xlink:href="#accordian-indicator"/>
                             </svg>
                         </div>
-                        <div class="accordian-title">Programuję/projektuję i chcę pomóc w projekcie</div>
+                        <div class="accordian-title">Chcę pomóc w projekcie</div>
                     </div>
                     <div class="accordian-content" aria-hidden="true">
-                        <p>Zapraszmy do włączenia się w pracę nad serwisem Pola. Dołącz do nas i pracuj nad <a href="https://github.com/KlubJagiellonski/pola-android">aplikacją na Androida</a>, <a href="https://github.com/KlubJagiellonski/pola-ios/issues">aplikacją na iPhone'a</a> lub <a href="https://github.com/KlubJagiellonski/pola-backend/issues">stroną internetową.</a>, </p>
+                        <p>Zapraszamy do włączenia się w pracę nad serwisem Pola. Dołącz do nas i pracuj nad <a href="https://github.com/KlubJagiellonski/pola-android">aplikacją na Androida</a>, <a href="https://github.com/KlubJagiellonski/pola-ios/issues">aplikacją na iPhone'a</a> lub <a href="https://github.com/KlubJagiellonski/pola-backend/issues">stroną internetową.</a>. Stale poszukujemy też wolontariuszy chcących pomóc nam rozwijać bazę danych o firmach - zachęcamy do kontaktu z Mateuszem Perowiczem (tel. <a href="tel:+48660010034">660 010 034</a>, e-mail: <a href="mailto:mateusz.perowicz@klubjagiellonski.pl">mateusz.perowicz@klubjagiellonski.pl</a>)</p>
                     </div>
                 </div>
             </div>
@@ -192,17 +201,31 @@
                         <ul class="team-list">
                             <li>Arek Banas</li>
                             <li>Kamil Breguła</li>
+                            <li>Rafał Gawlik</li>
+                            <li>Marcin Stepnowski</li>
+                            <li>Zuzanna Dudzińska</li>
+                            <li>Julia Dudzińska</li>
+                            <li>Jakub Kałamarz</li>
+                            <li>Karol Kamiński</li>
+                            <li>Mikołaj Rodkiewicz</li>
+                            <li>Katarzyna Grudzień</li>
+                            <li>Adam Walkowski</li>
+                            <li>Kuba Lipiński</li>
+                            <li>Łukasz Rejman</li>
+                            <li>Arek Banas</li>
                             <li>Paweł Janeczek</li>
                             <li>Grzesiek Kapusta</li>
                             <li>Jurek Kleszcz</li>
                             <li>Konrad Krakowiak</li>
                             <li>Antoni Kędracki</li>
-                            <li>Kuba Lipiński</li>
-                            <li>Łukasz Rejman</li>
-                            <li>Marcin Stepnowski</li>
-                            <li>Michał Tajchert </li>
+                            <li>Michał Tajchert</li>
                         </ul>
                     </div>
+                    <div class="team-title">kontakt</div>
+                    <ul class="team-list">
+                        <li>pola@klubjagiellonski.pl</li>
+                        <li>tel. 660 010 034</li>
+                    </ul>
                     <div class="team-group">
                         <div class="team-title">algorytm:</div>
                         <ul class="team-list">
@@ -222,27 +245,34 @@
                     <div class="team-group">
                         <div class="team-title">koordynacja: </div>
                         <ul class="team-list">
-                            <li>Kuba Lipiński</li>
+                            <li>Obecnie - Mateusz Perowicz</li>
+                            <li>Bartosz Paszcza</li>
+                            <li>Maciej Dulak</li>
                         </ul>
                     </div>
                     <div class="team-group">
                         <div class="team-title">redakcja: </div>
                         <ul class="team-list">
+                            <li>Bartek Ząbek</li>
+                            <li>Piotr Kaźmierski</li>
+                            <li>Arkadiusz Tomczyński</li>
+                            <li>Mikołaj Dłubak</li>
+                            <li>Łukasz Cader</li>
+                            <li>Dawid Kiljański</li>
                             <li>Maciek Dulak</li>
                             <li>Mateusz Mroczek</li>
                             <li>Mateusz Perowicz</li>
                             <li>Wojtek Skierski</li>
-                            <li>Bartek Ząbek</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <div class="section"  id="partners">
+            <div class="section" id="partners">
               <h2 >Wydawca</h2>
               <div class="row">
                   <div class="col-xs-12 col-md-6 col-lg-4">
-                    <a href="http://www.kj.org.pl" style="border: none;">
-                        <img class="img-responsive" style="width:50%;" src="{% static "images/logo_kj.png" %}"/>
+                    <a href="https://klubjagiellonski.pl/" style="border: none;">
+                        <img class="img-responsive" style="width:50%;" src="{% static "images/logo_kjv2_crop.png" %}"/>
                     </a>
                 </div>
             </div>

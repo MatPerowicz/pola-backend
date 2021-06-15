@@ -1,0 +1,45 @@
+---
+pull_request_rules:
+  - name: Automatic merge PR with automerge label
+    conditions:
+      - label=automerge
+      - check-success=Build Prod Image
+      - check-success=Django tests (3.8)
+      - check-success=Django tests (3.9)
+      - check-success=Static checks
+      - check-success=BI Validate
+    actions:
+      merge:
+        method: squash
+  - name: Add label on conflict
+    conditions:
+      - conflict
+      - -closed
+    actions:
+      label:
+        add:
+          - conflict
+      comment:
+        message: Could you please fix the conflicts @{{author}}? 🙏
+  - name: Remove label on conflict
+    conditions:
+      - -conflict
+      - -closed
+    actions:
+      label:
+        remove:
+          - conflict
+  - name: Add label on BI Validatiton failutre
+    conditions:
+      - check-failure=BI Validate
+    actions:
+      label:
+        add:
+          - "BI Validation Failed"
+  - name: Remove label on BI Validatiton success
+    conditions:
+      - check-success=BI Validate
+    actions:
+      label:
+        remove:
+          - "BI Validation Failed"

@@ -1,4 +1,4 @@
-{% load staticfiles %}
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="pl">
@@ -62,13 +62,23 @@
       WebFontConfig = {
         google: {
           families: ['Lato:400,300,100:latin,latin-ext']
-      }
-  };
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
+        }
+      };
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
+    <!---
+    Release info:
+    SHA: {{ release_sha }}
+    Link: {{ release_link }}
+    -->
 </head>
 <body>
     <div id="svg-container">
+    </div>
+    <div class="notice-support">
+        <div class="container">
+            Wesprzyj rozwój aplikacji Pola! <a href="https://klubjagiellonski.pl/zbiorka/wesprzyj-rozwoj-aplikacji-pola-promuj-madry-patriotyzm-konsumencki/">Więcej</a>
+        </div>
     </div>
     <div class="{% block header_class_name %}{% endblock %}">
         <div class="top-bar">
@@ -85,7 +95,7 @@
                 <div class="top-bar-nav top-bar-social">
                     <ul>
                         <li>
-                            <a href="mailto:aplikacja.pola@gmail.com">
+                            <a href="mailto:pola@klubjagiellonski.pl">
                                 <svg role="img" class="icon" title="Mail">
                                     <use xlink:href="#mail"/>
                                 </svg>

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.contrib import admin
 from reversion.admin import VersionAdmin
 
@@ -10,7 +9,6 @@ class ProductAdmin(VersionAdmin):
         'id',
         'name',
         'code',
-        'company',
     )
     list_filter = ('company',)
     search_fields = ('name',)

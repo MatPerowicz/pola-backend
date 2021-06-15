@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import re
 from os.path import basename
 
@@ -11,7 +9,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from reversion.models import Revision
 
@@ -20,31 +17,27 @@ from product.models import Product
 
 class ReportQuerySet(models.QuerySet):
     def only_open(self):
-        return (self.filter(resolved_at__isnull=True)
-                    .filter(resolved_by__isnull=True))
+        return self.filter(resolved_at__isnull=True).filter(resolved_by__isnull=True)
 
     def only_resolved(self):
-        return (self.filter(resolved_at__isnull=False)
-                    .filter(resolved_by__isnull=False))
+        return self.filter(resolved_at__isnull=False).filter(resolved_by__isnull=False)
 
     def resolve(self, user):
-        return self.update(resolved_at=timezone.now(),
-                           resolved_by=user)
+        return self.update(resolved_at=timezone.now(), resolved_by=user)
 
 
-@python_2_unicode_compatible
 class Report(models.Model):
     product = models.ForeignKey(Product, null=True, on_delete=models.CASCADE)
-    client = models.CharField(max_length=40, blank=True, null=True,
-                              default=None, verbose_name=_(u'Zgłaszający'))
-    created_at = models.DateTimeField(auto_now_add=True,
-                                      verbose_name=_('Utworzone'))
-    resolved_at = models.DateTimeField(null=True, blank=True,
-                                       verbose_name=_('Rozpatrzone'))
-    resolved_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True,
-                                    blank=True,
-                                    verbose_name=_('Rozpatrzone przez'),
-                                    on_delete=models.CASCADE)
+    client = models.CharField(max_length=40, blank=True, null=True, default=None, verbose_name=_('Zgłaszający'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('Utworzone'))
+    resolved_at = models.DateTimeField(null=True, blank=True, verbose_name=_('Rozpatrzone'))
+    resolved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        verbose_name=_('Rozpatrzone przez'),
+        on_delete=models.CASCADE,
+    )
     description = models.TextField(verbose_name=_('Opis'))
     objects = ReportQuerySet.as_manager()
 
@@ -84,28 +77,24 @@ class Report(models.Model):
         ordering = ['-created_at']
         get_latest_by = 'created_at'
         permissions = (
-            ("view_report", "Can see all report"),
+            # ("view_report", "Can see all report"),
             # ("add_report", "Can add a new report"),
             # ("change_report", "Can edit the report"),
             # ("delete_report", "Can delete the report"),
         )
-        indexes = [
-            BrinIndex(fields=['created_at'], pages_per_range=16)
-        ]
+        indexes = [BrinIndex(fields=['created_at'], pages_per_range=16)]
 
 
-@python_2_unicode_compatible
 class Attachment(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE)
-    attachment = models.FileField(
-        upload_to="reports/%Y/%m/%d", verbose_name=_("File"))
+    attachment = models.FileField(upload_to="reports/%Y/%m/%d", verbose_name=_("File"))
 
     @property
     def filename(self):
         return basename(self.attachment.name)
 
     def __str__(self):
-        return "%s" % (self.filename)
+        return f"{self.filename}"
 
     def get_absolute_url(self):
         return self.attachment.url

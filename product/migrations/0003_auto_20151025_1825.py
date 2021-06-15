@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.db import models, migrations
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -23,7 +20,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='product',
             name='company',
-            field=models.ForeignKey(verbose_name='Producent', blank=True, to='company.Company', null=True, on_delete=models.CASCADE),
+            field=models.ForeignKey(
+                verbose_name='Producent',
+                blank=True,
+                to='company.Company',
+                null=True,
+                on_delete=models.CASCADE,
+            ),
         ),
         migrations.AlterField(
             model_name='product',

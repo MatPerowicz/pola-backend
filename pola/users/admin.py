@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
-
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
@@ -16,9 +13,9 @@ class MyUserChangeForm(UserChangeForm):
 
 class MyUserCreationForm(UserCreationForm):
 
-    error_message = UserCreationForm.error_messages.update({
-        'duplicate_username': 'This username has already been taken.'
-    })
+    error_message = UserCreationForm.error_messages.update(
+        {'duplicate_username': 'This username has already been taken.'}
+    )
 
     class Meta(UserCreationForm.Meta):
         model = User

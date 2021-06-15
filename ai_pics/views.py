@@ -1,34 +1,34 @@
-from boto.s3.connection import S3Connection, Bucket, Key
+from boto.s3.connection import Bucket, Key
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, AccessMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 from django.http import JsonResponse
 from django.utils.functional import cached_property
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView, ListView
 
-from ai_pics.models import AIPics, AIAttachment
+from ai_pics.models import AIAttachment, AIPics
+from pola.s3 import create_s3_connection
 
 
 class BucketMixin:
     @property
     def _bucket(self):
-        conn = S3Connection(settings.AWS_ACCESS_KEY_ID,
-                            settings.AWS_SECRET_ACCESS_KEY)
+        conn = create_s3_connection()
         bucket = Bucket(conn, settings.AWS_STORAGE_BUCKET_AI_NAME)
         return bucket
 
 
-class AIPicsPageView(LoginRequiredMixin,
-                     PermissionRequiredMixin,
-                     BucketMixin,
-                     ListView):
+class AIPicsPageView(LoginRequiredMixin, PermissionRequiredMixin, BucketMixin, ListView):
     permission_required = 'ai_pics.view_aipics'
     ordering = '-id'
     paginate_by = 10
     model = AIPics
 
     def get_queryset(self):
-        qs = super(AIPicsPageView, self).get_queryset()
+        qs = super().get_queryset()
         if self.state == 'valid':
             qs = qs.filter(is_valid=True)
         elif self.state == 'invalid':
@@ -44,11 +44,11 @@ class AIPicsPageView(LoginRequiredMixin,
 
     def get_context_data(self, *args, **kwargs):
         kwargs['state'] = self.state
-        return super(AIPicsPageView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
     def post(self, request):
         action_name = self.request.POST['action']
-        fn = getattr(self, 'action_%s' % action_name, None)
+        fn = getattr(self, f'action_{action_name}', None)
         if fn:
             return fn(request)
 
@@ -101,14 +101,10 @@ class ApiDeleteAttachmentView(View, PermissionRequiredMixin, BucketMixin):
         return JsonResponse({'ok': True})
 
 
-class AIPicsDetailView(LoginRequiredMixin,
-                       PermissionRequiredMixin,
-                       DetailView):
+class AIPicsDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     permission_required = 'ai_pics.view_aipics'
     model = AIPics
 
     def get_queryset(self):
         qs = super().get_queryset()
         return qs.prefetch_related('aiattachment_set')
-
-

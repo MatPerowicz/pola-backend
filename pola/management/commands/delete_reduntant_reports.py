@@ -1,5 +1,3 @@
-from sets import Set
-
 from django.core.management.base import BaseCommand
 
 from product.models import Product
@@ -15,20 +13,17 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print('Starting...')
 
-        products = Product.objects.filter(pk__gte=options["last_product_id"]) \
-            .values('id', 'name') \
-            .order_by('id').iterator()
+        products = (
+            Product.objects.filter(pk__gte=options["last_product_id"]).values('id', 'name').order_by('id').iterator()
+        )
 
         for product in products:
 
-            print("{} (id:{})".format(product['name'].encode('UTF-8')
-                                      if product['name'] else '', product['id']))
+            print(f"{product['name'].encode('UTF-8') if product['name'] else ''} (id:{product['id']})")
 
-            reports = Report.objects\
-                .filter(product__id=product['id'], client='krs-bot')\
-                .order_by('created_at')
+            reports = Report.objects.filter(product__id=product['id'], client='krs-bot').order_by('created_at')
 
-            desc = Set()
+            desc = set()
             for report in reports:
 
                 if report.description in desc:

@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.db import models, migrations
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -14,6 +11,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='company',
             name='Editor_notes',
-            field=models.TextField(null=True, verbose_name='Notatki redakcji (nie pokazujemy u\u017cytkownikom)', blank=True),
+            field=models.TextField(
+                null=True, verbose_name='Notatki redakcji (nie pokazujemy u\u017cytkownikom)', blank=True
+            ),
         ),
     ]

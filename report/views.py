@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -10,11 +9,11 @@ from django_filters.views import FilterView
 from pola.mixins import LoginPermissionRequiredMixin
 from pola.views import ActionView
 from report.models import Report
+
 from .filters import ReportFilter
 
 
-class ReportListView(LoginPermissionRequiredMixin,
-                     FilterView):
+class ReportListView(LoginPermissionRequiredMixin, FilterView):
     permission_required = 'report.view_report'
     model = Report
     filterset_class = ReportFilter
@@ -22,8 +21,7 @@ class ReportListView(LoginPermissionRequiredMixin,
     queryset = Report.objects.prefetch_related('attachment_set').all()
 
 
-class ReportAdvancedListView(LoginPermissionRequiredMixin,
-                             FilterView):
+class ReportAdvancedListView(LoginPermissionRequiredMixin, FilterView):
     permission_required = 'report.view_report'
     model = Report
     filterset_class = ReportFilter
@@ -38,21 +36,18 @@ class ReportAdvancedListView(LoginPermissionRequiredMixin,
         return HttpResponseRedirect(request.get_full_path())
 
 
-class ReportDeleteView(LoginPermissionRequiredMixin,
-                       DeleteView):
+class ReportDeleteView(LoginPermissionRequiredMixin, DeleteView):
     permission_required = 'report.delete_report'
     model = Report
     success_url = reverse_lazy('report:list')
 
 
-class ReportDetailView(LoginPermissionRequiredMixin,
-                       DetailView):
+class ReportDetailView(LoginPermissionRequiredMixin, DetailView):
     permission_required = 'report.view_report'
     model = Report
 
 
-class ReportResolveView(LoginPermissionRequiredMixin,
-                        ActionView):
+class ReportResolveView(LoginPermissionRequiredMixin, ActionView):
     permission_required = 'report.change_report'
     model = Report
     template_name_suffix = '_resolve'
@@ -60,6 +55,20 @@ class ReportResolveView(LoginPermissionRequiredMixin,
 
     def action(self):
         self.object.resolve(self.request.user)
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+
+class ReportResolveAllView(LoginPermissionRequiredMixin, ActionView):
+    permission_required = 'report.change_report'
+    model = Report
+    template_name_suffix = '_resolve_all'
+    queryset = Report.objects.only_open().all()
+
+    def action(self):
+        for i in Report.objects.filter(product=self.object.product):
+            i.resolve(self.request.user)
 
     def get_success_url(self):
         return self.object.get_absolute_url()

@@ -1,1 +1,0 @@
-from .MainClass import *  # noqa

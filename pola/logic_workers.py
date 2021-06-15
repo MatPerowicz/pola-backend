@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from datetime import timedelta
 
 from django.conf import settings
@@ -8,10 +6,13 @@ from django.db import transaction
 from django.utils import timezone
 
 from company.models import Company
-from pola.logic import create_from_api, update_company_from_krs
+from pola.logic import create_from_api
+from pola.produkty_w_sieci_api import (
+    Client,
+    ConnectionError,
+    is_code_supported_by_gs1_api,
+)
 from product.models import Product
-from produkty_w_sieci_api import Client, is_code_supported_by_gs1_api, ConnectionError
-
 
 REQUERY_590_FREQUENCY = 30
 REQUERY_590_LIMIT = 10000
@@ -31,14 +32,13 @@ REQUERY_ALL_LIMIT = 10000
 def requery_590_codes():
     print("Starting requering 590 codes...")
 
-    p590 = Product.objects\
-        .filter(
-            company__isnull=True,
-            code__startswith='590',
-            ilim_queried_at__lt=timezone.now() - timedelta(days=REQUERY_590_FREQUENCY)
-        ).order_by('-query_count')[:REQUERY_590_LIMIT]
+    p590 = Product.objects.filter(
+        company__isnull=True,
+        code__startswith='590',
+        ilim_queried_at__lt=timezone.now() - timedelta(days=REQUERY_590_FREQUENCY),
+    ).order_by('-query_count')[:REQUERY_590_LIMIT]
 
-#    p590 = products = Product.objects.filter(code='5909990022380')
+    #    p590 = products = Product.objects.filter(code='5909990022380')
 
     requery_products(p590)
 
@@ -48,13 +48,13 @@ def requery_590_codes():
 def requery_all_codes():
     print("Starting requering all codes...")
 
-    products = Product.objects\
-        .filter(
-            #            company__isnull=True,
-            ilim_queried_at__lt=timezone.now() - timedelta(days=REQUERY_ALL_FREQUENCY)
-        ).order_by('-query_count')[:REQUERY_ALL_LIMIT]
+    products = Product.objects.filter(
+        #            company__isnull=True,
+        ilim_queried_at__lt=timezone.now()
+        - timedelta(days=REQUERY_ALL_FREQUENCY)
+    ).order_by('-query_count')[:REQUERY_ALL_LIMIT]
 
-#    products = Product.objects.filter(code='142222157008')
+    #    products = Product.objects.filter(code='142222157008')
 
     requery_products(products)
 
@@ -84,6 +84,10 @@ def requery_products(products):
                 print(";")
         except ConnectionError as e:
             print(e)
+
+
+def update_company_from_krs(prod, company):
+    return False
 
 
 def update_from_kbpoz(db_filename):
@@ -116,8 +120,7 @@ def update_from_kbpoz(db_filename):
                             prod.ilim_queried_at = timezone.now()
                             Product.save(
                                 prod,
-                                commit_desc="Produkt przypisany do producenta na podstawie bazy "
-                                            "KBPOZ"
+                                commit_desc="Produkt przypisany do producenta na podstawie bazy " "KBPOZ",
                             )
 
                 except ObjectDoesNotExist:

@@ -4,21 +4,24 @@ from django.http import HttpResponseRedirect
 from django.utils.encoding import force_text
 
 
-class BaseConcurency(object):
+class BaseConcurency:
     def is_locked(obj, user):
         raise NotImplementedError(
             'subclasses of BaseConcurency must \
-            provide a is_locked(obj, user) method')
+            provide a is_locked(obj, user) method'
+        )
 
     def lock(obj, user):
         raise NotImplementedError(
             'subclasses of BaseConcurency must \
-            provide a lock(obj, user) method')
+            provide a lock(obj, user) method'
+        )
 
     def unlock(obj):
         raise NotImplementedError(
             'subclasses of BaseConcurency must \
-            provide a unlock(obj, user) method')
+            provide a unlock(obj, user) method'
+        )
 
 
 class CacheConcurency(BaseConcurency):
@@ -53,7 +56,7 @@ class CacheConcurency(BaseConcurency):
 concurency = CacheConcurency()
 
 
-class ConcurencyProtectUpdateView(object):
+class ConcurencyProtectUpdateView:
     def get_concurency(self):
         return concurency
 
@@ -61,8 +64,7 @@ class ConcurencyProtectUpdateView(object):
         if self.concurency_url:
             return force_text(self.concurency_url)
         else:
-            raise ImproperlyConfigured(
-                "No URL to redirect to. Provide a concurency_url.")
+            raise ImproperlyConfigured("No URL to redirect to. Provide a concurency_url.")
 
     def dispatch(self, request, *args, **kwargs):
         concurency = self.get_concurency()
@@ -71,14 +73,10 @@ class ConcurencyProtectUpdateView(object):
         if concurency.is_locked(obj, request.user):
             return HttpResponseRedirect(concurency_url)
         concurency.lock(obj, request.user)
-        return super(
-            ConcurencyProtectUpdateView,
-            self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, *args, **kwargs):
         concurency = self.get_concurency()
         obj = self.get_object()
         concurency.unlock(obj)
-        return super(
-            ConcurencyProtectUpdateView,
-            self).form_valid(*args, **kwargs)
+        return super().form_valid(*args, **kwargs)

@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.db import models, migrations
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -14,7 +11,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Query',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True),
+                ),
                 ('client', models.CharField(default=None, max_length=40, null=True, blank=True)),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('product', models.ForeignKey(to='product.Product', on_delete=models.CASCADE)),

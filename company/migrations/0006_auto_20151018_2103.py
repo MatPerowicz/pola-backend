@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.db import models, migrations
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -14,6 +11,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='company',
             name='verified',
-            field=models.BooleanField(default=False, verbose_name='Dane zweryfikowane', choices=[(True, 'Tak'), (False, 'Nie')]),
+            field=models.BooleanField(
+                default=False, verbose_name='Dane zweryfikowane', choices=[(True, 'Tak'), (False, 'Nie')]
+            ),
         ),
     ]

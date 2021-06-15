@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from django.contrib import admin
 
 from .models import Attachment, Report
@@ -9,7 +8,7 @@ class AttachmentIline(admin.TabularInline):
 
 
 class AttachmentAdmin(admin.ModelAdmin):
-    list_display = (u'id', 'report', 'attachment')
+    list_display = ('id', 'report', 'attachment')
     list_filter = ('report',)
 
 
@@ -27,7 +26,7 @@ class ReportAdmin(admin.ModelAdmin):
     )
     list_filter = ('product', 'created_at', 'resolved_at', 'resolved_by')
     date_hierarchy = 'created_at'
-    inlines = (AttachmentIline, )
+    inlines = (AttachmentIline,)
 
 
 admin.site.register(Report, ReportAdmin)

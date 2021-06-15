@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.db import models, migrations
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -14,7 +11,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AIAttachment',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True),
+                ),
                 ('attachment', models.FileField(upload_to='ai/%Y/%m/%d', verbose_name='File')),
             ],
             options={
@@ -25,7 +25,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AIPics',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                (
+                    'id',
+                    models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True),
+                ),
                 ('client', models.CharField(max_length=40, verbose_name='Zg\u0142aszaj\u0105cy')),
                 ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Utworzone')),
                 ('original_width', models.IntegerField()),

@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
-from django.db import models, migrations
 from django.conf import settings
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
@@ -15,7 +12,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='report',
             name='client',
-            field=models.CharField(default=None, max_length=40, null=True, verbose_name='Zg\u0142aszaj\u0105cy', blank=True),
+            field=models.CharField(
+                default=None, max_length=40, null=True, verbose_name='Zg\u0142aszaj\u0105cy', blank=True
+            ),
         ),
         migrations.AlterField(
             model_name='report',
@@ -35,6 +34,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='report',
             name='resolved_by',
-            field=models.ForeignKey(verbose_name='Rozpatrzone przez', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE),
+            field=models.ForeignKey(
+                verbose_name='Rozpatrzone przez',
+                blank=True,
+                to=settings.AUTH_USER_MODEL,
+                null=True,
+                on_delete=models.CASCADE,
+            ),
         ),
     ]

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 from django.contrib import admin
 
-from .models import AIPics, AIAttachment
+from .models import AIAttachment, AIPics
 
 
 class AIAttachmentAdminInline(admin.TabularInline):
@@ -12,22 +11,20 @@ class AIAttachmentAdminInline(admin.TabularInline):
 
 @admin.register(AIPics)
 class AIPicsAdmin(admin.ModelAdmin):
-    readonly_fields = ('id', 'created_at',)
+    readonly_fields = (
+        'id',
+        'created_at',
+    )
     fields = [
         'id',
         'product',
         'client',
         'created_at',
-        (
-            'original_width',
-            'original_height',
-            'width',
-            'height'
-        ),
+        ('original_width', 'original_height', 'width', 'height'),
         'device_name',
         'flash_used',
         'was_portrait',
-        'is_valid'
+        'is_valid',
     ]
     list_display = (
         'id',
@@ -36,9 +33,7 @@ class AIPicsAdmin(admin.ModelAdmin):
         'created_at',
         'is_valid',
     )
-    inlines = [
-        AIAttachmentAdminInline
-    ]
+    inlines = [AIAttachmentAdminInline]
     list_filter = ('product', 'created_at', 'is_valid')
     date_hierarchy = 'created_at'
 

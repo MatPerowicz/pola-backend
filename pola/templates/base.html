@@ -1,4 +1,4 @@
-{% load staticfiles i18n %}<!DOCTYPE html>
+{% load static i18n %}<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -57,10 +57,15 @@
                             <li><a href="{% url 'company:brand-list' %}">{% trans "Marki" %}</a></li>
                           </ul>
                         </li>
-
                     {% endif %}
                     {% if perms.report.view_report %}
-                        <li><a href="{% url 'report:list' %}">{% trans "Zgłoszenia" %}</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Zgłoszenia <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'report:list' %}">{% trans "Lista podstawowa" %}</a></li>
+                                <li><a href="{% url 'report:advanced' %}">{% trans "Lista zaawansowana" %}</a></li>
+                            </ul>
+                        </li>
                     {% endif %}
                     {% if perms.ai_pics.view_aipics %}
                         <li><a href="{% url 'ai_pics:list' %}">{% trans "Zdjęcia AI" %}</a></li>
@@ -113,4 +118,3 @@
     {% include 'partiales/google_analytics.html' %}
 </body>
 </html>
-
